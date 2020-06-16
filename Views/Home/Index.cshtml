@@ -1,102 +1,78 @@
 ﻿@using PWABlog.ViewModels.Home
 @model PWABlog.ViewModels.Home.HomeIndexViewModel
+<section class="ftco-section ftco-no-pt ftco-no-pb">
+    <div class="container">
+	    <div class="row d-flex">
+	    	<div class="col-xl-8 py-5 px-md-5">
+		        <div class="row pt-md-4">
+			        @foreach (PostagemHomeIndex postagem in @Model.Postagens)
+			        {
+				        <div class="col-md-12">
+					        <div class="blog-entry ftco-animate d-md-flex">
+						        <div class="text text-2 pl-md-4">
+							        <h3 class="mb-2"><a href="#">@postagem.Titulo</a></h3>
+							        <div class="meta-wrap">
+								        <p class="meta">
+									        <span><i class="icon-calendar mr-2"></i>@postagem.Data</span>
+									        <span><a href="#"><i class="icon-folder-o mr-2"></i>Travel</a></span>
+									        <span><i class="icon-comment2 mr-2"></i>@postagem.NumeroComentarios</span>
+								        </p>
+							        </div>
+							        <p class="mb-4">@postagem.Descricao</p>
+							        <p><a href="#" class="btn-custom">Read More <span class="ion-ios-arrow-forward"></span></a></p>
+						        </div>
+					        </div>
+					    </div>
+					}
+		        </div><!-- END-->
+		    </div>
+	    	<div class="col-xl-4 sidebar ftco-animate bg-light pt-5">
+				<div class="sidebar-box pt-md-4">
+					<form action="#" class="search-form">
+						<div class="form-group">
+							<span class="icon icon-search"></span>
+							<input type="text" class="form-control" placeholder="Type a keyword and hit enter">
+						</div>
+					</form>
+				</div>
+				<div class="sidebar-box ftco-animate">
+	            	<h3 class="sidebar-heading">Categorias</h3>
+					<ul class="categories">
+					@foreach (CategoriaHomeIndex categoria in @Model.Categorias)
+					{
+						<li><a href="#">@categoria.Nome</a></li>
+					}
+					</ul>
+				</div>
 
-<!-- Conteúdo Principal -->
-<div class="w3-col l8 s12">
-    <!-- Postagens -->
-    @foreach (PostagemHomeIndex postagem in @Model.Postagens)
-    {
-        <div class="w3-card-4 w3-margin w3-white">
-            <img src="https://via.placeholder.com/650x200?text=Imagem da Postagem" alt="@postagem.Titulo" style="width:100%">
-            <div class="w3-container">
-                <h3>
-                    <b>@postagem.Titulo</b>
-                </h3>
-                <h5>
-                    @postagem.Categoria <span class="w3-opacity">@postagem.Data</span>
-                </h5>
-            </div>
+				<div class="sidebar-box ftco-animate">
+					<h3 class="sidebar-heading">Postagens populares</h3>
+					@foreach (PostagemPopularHomeIndex postagemPopular in @Model.PostagensPopulares)
+					{
+						<div class="block-21 mb-4 d-flex">
+							<!--<a class="blog-img mr-4" style="background-image: url(../images/image_1.jpg);"></a>-->
+							<div class="text">
+								<h3 class="heading"><a href="#">@postagemPopular.Titulo</a></h3>
+							</div>
+						</div>
+					}
+				</div>
 
-            <div class="w3-container">
-                <p>@postagem.Descricao</p>
-                <div class="w3-row">
-                    <div class="w3-col m8 s12">
-                        <p>
-                            <button class="w3-button w3-padding-large w3-white w3-border">
-                                <b>READ MORE »</b>
-                            </button>
-                        </p>
-                    </div>
-                    <div class="w3-col m4 w3-hide-small">
-                        <p>
-                            <span class="w3-padding-large w3-right">
-                                <b>Comentários </b> <span class="w3-tag">@postagem.NumeroComentarios</span>
-                                <!--<b>Comments </b> <span class="w3-badge">2</span>-->
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+	            <div class="sidebar-box ftco-animate">
+					<h3 class="sidebar-heading">Etiquetas</h3>
+		            <ul class="tagcloud">
+			            @foreach (EtiquetaHomeIndex etiqueta in @Model.Etiquetas)
+			            {
+				            <a href="#" class="tag-cloud-link">@etiqueta.Nome</a>
+			            }
+		            </ul>
+	            </div>
 
-<!-- Conteúdo Lateral -->
-<div class="w3-col l4">
-    <!-- Categorias -->
-    <div class="w3-card w3-margin">
-        <div class="w3-container w3-padding">
-            <h4>Categorias</h4>
-        </div>
-        <div class="w3-container w3-white">
-            <p>
-                @foreach (CategoriaHomeIndex categoria in @Model.Categorias)
-                {
-                    <span class="w3-tag w3-light-grey w3-margin-bottom">@categoria.Nome</span>
-                }
-            </p>
-        </div>
+		        <div class="sidebar-box ftco-animate">
+					<h3 class="sidebar-heading">Julio Castro</h3>
+					<p>Descrição sobre mim.</p>
+				</div>
+			</div><!-- END COL -->
+	    </div>
     </div>
-    
-    <!-- Etiquetas -->
-    <div class="w3-card w3-margin">
-        <div class="w3-container w3-padding">
-            <h4>Etiquetas</h4>
-        </div>
-        <div class="w3-container w3-white">
-            <p>
-                @foreach (EtiquetaHomeIndex etiqueta in @Model.Etiquetas)
-                {
-                    <span class="w3-tag w3-light-grey w3-margin-bottom">@etiqueta.Nome</span>
-                }
-            </p>
-        </div>
-    </div>
-
-    <!-- Postagens Populares -->
-    <div class="w3-card w3-margin">
-        <div class="w3-container w3-padding">
-            <h4>Postagens Populares</h4>
-        </div>
-        <ul class="w3-ul w3-hoverable w3-white">
-           @foreach (PostagemPopularHomeIndex postagemPopular in @Model.PostagensPopulares) {
-               <li class="w3-padding-16">
-                   <img src="https://via.placeholder.com/75/BBC9E3" alt="Image" class="w3-left w3-margin-right" style="width:50px">
-                   <span class="w3-large">@postagemPopular.Titulo</span><br>
-                   <span>@postagemPopular.Categoria</span>
-               </li>   
-           }
-        </ul>
-    </div>
-
-    <!-- Sobre Mim -->
-    <div class="w3-card w3-margin w3-margin-top">
-        <img src="~/media/portrait-leoap.jpg" style="width:100%">
-        <div class="w3-container w3-white">
-            <h4>
-                <b>Leonardo de Aguiar</b>
-            </h4>
-            <p>Descrição sobre mim</p>
-        </div>
-    </div>
-</div>
+</section>
