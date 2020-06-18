@@ -25,6 +25,17 @@ namespace PWABlog.Controllers.Admin
         public IActionResult Listar()
         {
             AdminAutoresListarViewModel model = new AdminAutoresListarViewModel();
+
+            var listaAutores = _autoresOrmService.ObterAutores();
+
+            foreach (var autorEntity in listaAutores)
+            {
+                var autorAdminAutores = new AutorAdminAutores();
+                autorAdminAutores.Id = autorEntity.Id;
+                autorAdminAutores.Nome = autorEntity.Nome;
+
+                model.Autores.Add(autorAdminAutores);
+            }
             
             return View(model);
         }
