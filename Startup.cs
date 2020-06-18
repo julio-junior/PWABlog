@@ -119,6 +119,11 @@ namespace PWABlog
                     pattern: "admin/postagens/{action}/{id?}",
                     defaults: new {controller = "AdminPostagens", action = "Listar"}
                 );
+                endpoints.MapControllerRoute(
+                    name: "admin.autores",
+                    pattern: "admin/autores/{action}/{id?}",
+                    defaults: new {controller = "AdminAutores", action = "Listar"}
+                );
             });
         }
     }
