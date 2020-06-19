@@ -17,6 +17,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Nome</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,10 @@
                 <tr>
                     <td>@autor.Id</td>
                     <td>@autor.Nome</td>
+                    <td>
+                        <a class="btn btn-primary btn-xs" href="/admin/autores/editar/@autor.Id">Editar</a>
+                        <a class="btn btn-danger btn-xs" href="/admin/autores/remover/@autor.Id">Remover</a>
+                    </td>
                 </tr>
             }
             </tbody>

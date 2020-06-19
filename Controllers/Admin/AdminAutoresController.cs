@@ -49,7 +49,7 @@ namespace PWABlog.Controllers.Admin
         {
             AdminAutoresCriarViewModel model = new AdminAutoresCriarViewModel();
             
-            ViewBag.erro = TempData["erro-msg"];
+            model.Erro = (string) TempData["erro-msg"];
 
             return View(model);
         }
@@ -72,10 +72,22 @@ namespace PWABlog.Controllers.Admin
         [HttpGet]
         public IActionResult Editar(int id)
         {
-            ViewBag.id = id;
-            ViewBag.erro = TempData["erro-msg"];
+            AdminAutoresEditarViewModel model = new AdminAutoresEditarViewModel();
 
-            return View();
+            var autorEditar = _autoresOrmService.ObterAutorPorId(id);
+
+            if (autorEditar == null)
+            {
+                return RedirectToAction("Listar");
+            }
+            
+            model.Erro = (string) TempData["erro-msg"];
+
+            model.idAutor = autorEditar.Id;
+            model.nomeAutor = autorEditar.Nome;
+            model.TituloPagina += model.nomeAutor;
+            
+            return View(model);
         }
 
         [HttpPost]
@@ -97,10 +109,22 @@ namespace PWABlog.Controllers.Admin
         [HttpGet]
         public IActionResult Remover(int id)
         {
-            ViewBag.id = id;
-            ViewBag.erro = TempData["erro-msg"];
+            AdminAutoresRemoverViewModel model = new AdminAutoresRemoverViewModel();
 
-            return View();
+            var autorRemover = _autoresOrmService.ObterAutorPorId(id);
+
+            if (autorRemover == null)
+            {
+                return RedirectToAction("Listar");
+            }
+
+            model.IdAutor = autorRemover.Id;
+            model.NomeAutor = autorRemover.Nome;
+            model.TituloPagina += model.NomeAutor;
+            
+            model.Erro = (string) TempData["erro-msg"];
+
+            return View(model);
         }
 
         [HttpPost]
