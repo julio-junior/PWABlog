@@ -1,1 +1,25 @@
-﻿Criar
+﻿@if (@Model.Erro != null) {
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h5><i class="icon fas fa-ban"></i> Erro!</h5>
+        @Model.Erro
+    </div>
+}
+
+<form action="/admin/categorias/criar" method="post">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Criar Autor</h3>
+        </div>
+        <div class="card-body">
+            <div class="form-group mb-3">
+                <label for="nome">Nome</label>
+                <input type="text" name="nome" id="nome" class="form-control">
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="/admin/categorias" class="btn btn-success">Voltar</a>
+            <button class="btn btn-success float-right" type="submit" >Cadastrar</button>
+        </div>
+    </div>    
+</form>

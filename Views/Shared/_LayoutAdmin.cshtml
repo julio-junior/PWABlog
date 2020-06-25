@@ -5,13 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@Model.TituloPagina</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/theme-admin/plugins/fontawesome-free/css/all.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/theme-admin/dist/css/adminlte.min.css">
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    
+    <link rel="stylesheet" href="~/css/select2.min.css">
+    <link rel="stylesheet" href="~/css/select2-bootstrap4.min.css">
+    
+    <link rel="stylesheet" href="~/css/summernote-bs4.min.css">
+    
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -132,9 +137,29 @@
 <script src="~/theme-admin/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="~/theme-admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Select2 -->
+<script src="~/js/select2.full.min.js"></script>
 <!-- AdminLTE App -->
 <script src="~/theme-admin/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="~/theme-admin/dist/js/demo.js"></script>
+<!-- Summernote -->
+<script src="~/js/summernote-bs4.min.js"></script>
+
+<script>
+     $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+    
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+          theme: 'bootstrap4'
+        })
+      })
+    // Summernote
+    $('.textarea').summernote({
+        height: 200
+    })
+</script>
 </body>
 </html>

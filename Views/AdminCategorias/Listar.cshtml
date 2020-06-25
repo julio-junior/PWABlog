@@ -1,4 +1,5 @@
-﻿@model PWABlog.ViewModels.Admin.AdminCategoriasListarViewModel
+﻿@using PWABlog.ViewModels.Admin
+@model PWABlog.ViewModels.Admin.AdminCategoriasListarViewModel
 
 <div class="card">
     <div class="card-header">
@@ -10,6 +11,28 @@
         </div>
     </div>
     <div class="card-body">
-        Conteúdo qualquer do painel
+        <a class="btn btn-primary mb-3" href="/admin/categorias/criar">Criar nova Categoria</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (CategoriaAdminCategorias categoria in @Model.Categorias)
+            {
+                <tr>
+                    <td>@categoria.Id</td>
+                    <td>@categoria.Nome</td>
+                    <td>
+                        <a class="btn btn-primary btn-xs" href="/admin/categorias/editar/@categoria.Id"><i class="fa fa-edit"></i> Editar</a>
+                        <a class="btn btn-danger btn-xs" href="/admin/categorias/remover/@categoria.Id"><i class="fa fa-trash"></i> Remover</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
 </div>

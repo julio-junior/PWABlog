@@ -1,8 +1,12 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PWABlog.Models.Blog.Autor;
+using PWABlog.Models.Blog.Categoria;
+using PWABlog.Models.Blog.Etiqueta;
 using PWABlog.Models.Blog.Postagem;
 using PWABlog.RequestModels.AdminPostagens;
+using PWABlog.ViewModels;
 using PWABlog.ViewModels.Admin;
 
 namespace PWABlog.Controllers.Admin
@@ -11,18 +15,40 @@ namespace PWABlog.Controllers.Admin
     public class AdminPostagensController : Controller
     {
         private readonly PostagemOrmService _postagemOrmService;
+        private readonly CategoriaOrmService _categoriaOrmService;
+        private readonly AutorOrmService _autorOrmService;
+        private readonly EtiquetaOrmService _etiquetaOrmService;
 
         public AdminPostagensController(
-            PostagemOrmService postagemOrmService
+            PostagemOrmService postagemOrmService,
+            CategoriaOrmService categoriaOrmService,
+            AutorOrmService autorOrmService,
+            EtiquetaOrmService etiquetaOrmService
         )
         {
             _postagemOrmService = postagemOrmService;
+            _categoriaOrmService = categoriaOrmService;
+            _autorOrmService = autorOrmService;
+            _etiquetaOrmService = etiquetaOrmService;
         }
 
         [HttpGet]
         public IActionResult Listar()
         {
             AdminPostagensListarViewModel model = new AdminPostagensListarViewModel();
+
+            var listaPostagens = _postagemOrmService.ObterPostagens();
+
+            foreach (var postagemEntity in listaPostagens)
+            {
+                var postagemAdminPostagens = new PostagemAdminPostagens();
+                postagemAdminPostagens.IdPostagem = postagemEntity.Id;
+                postagemAdminPostagens.TituloPostagem = postagemEntity.Titulo;
+                postagemAdminPostagens.NomeAutorPost = postagemEntity.Autor.Nome;
+                postagemAdminPostagens.NomeCategoriaPost = postagemEntity.Categoria.Nome;
+                
+                model.Postagens.Add(postagemAdminPostagens);
+            }
             
             return View(model);
         }
@@ -36,15 +62,46 @@ namespace PWABlog.Controllers.Admin
         [HttpGet]
         public IActionResult Criar()
         {
-            ViewBag.erro = TempData["erro-msg"];
+            AdminPostagensCriarViewModel model = new AdminPostagensCriarViewModel();
+            model.Erro = (string) TempData["erro-msg"];
 
-            return View();
+            var listaCategorias = _categoriaOrmService.ObterCategorias();
+            foreach (var categoriaEntity in listaCategorias)
+            {
+                var categoriaAdmPostagens = new CategoriaAdminPostagens();
+                categoriaAdmPostagens.IdCategoria = categoriaEntity.Id;
+                categoriaAdmPostagens.NomeCategoria = categoriaEntity.Nome;
+                
+                model.Categorias.Add(categoriaAdmPostagens);
+            }
+
+            var listaAutores = _autorOrmService.ObterAutores();
+            foreach (var autorEntity in listaAutores)
+            {
+                var autorAdminPostagens = new AutorAdminPostagens();
+                autorAdminPostagens.IdAutor = autorEntity.Id;
+                autorAdminPostagens.NomeAutor = autorEntity.Nome;
+                
+                model.Autores.Add(autorAdminPostagens);
+            }
+
+            var listaEtiquetas = _etiquetaOrmService.ObterEtiquetas();
+            foreach (var etiquetaEntity in listaEtiquetas)
+            {
+                var etiquetaAdminPostagens = new EtiquetaAdminPostagens();
+                etiquetaAdminPostagens.IdEtiqueta = etiquetaEntity.Id;
+                etiquetaAdminPostagens.NomeEtiqueta = etiquetaEntity.Nome;
+                
+                model.Etiquetas.Add(etiquetaAdminPostagens);
+            }
+
+            return View(model);
         }
 
         [HttpPost]
         public RedirectToActionResult Criar(AdminPostagensCriarRequestModel request)
         {
-            var titulo = request.Texto;
+            var titulo = request.Titulo;
             var descricao = request.Descricao;
             var idAutor = request.IdAutor;
             var idCategoria = request.IdCategoria;
@@ -64,10 +121,54 @@ namespace PWABlog.Controllers.Admin
         [HttpGet]
         public IActionResult Editar(int id)
         {
-            ViewBag.id = id;
-            ViewBag.erro = TempData["erro-msg"];
+            AdminPostagensEditarViewModel model = new AdminPostagensEditarViewModel();
 
-            return View();
+            var editarPostagem = _postagemOrmService.ObterPostagemPorId(id);
+
+            if (editarPostagem == null)
+            {
+                return RedirectToAction("Listar");
+            }
+
+            var listaCategoria = _categoriaOrmService.ObterCategorias();
+            foreach (var categoriaEntity in listaCategoria)
+            {
+                var categoriaAdminPostagens = new CategoriaAdminPostagens();
+                categoriaAdminPostagens.IdCategoria = categoriaEntity.Id;
+                categoriaAdminPostagens.NomeCategoria = categoriaEntity.Nome;
+                
+                model.Categorias.Add(categoriaAdminPostagens);
+            }
+
+            var listaAutor = _autorOrmService.ObterAutores();
+            foreach (var autorEntity in listaAutor)
+            {
+                var autorAdminPostagens = new AutorAdminPostagens();
+                autorAdminPostagens.IdAutor = autorEntity.Id;
+                autorAdminPostagens.NomeAutor = autorEntity.Nome;
+                
+                model.Autores.Add(autorAdminPostagens);
+            }
+
+            var listaEtiqueta = _etiquetaOrmService.ObterEtiquetas();
+            foreach(var etiquetaEntity in listaEtiqueta)
+            {
+                var etiquetaAdminPostagens = new EtiquetaAdminPostagens();
+                etiquetaAdminPostagens.IdEtiqueta = etiquetaEntity.Id;
+                etiquetaAdminPostagens.NomeEtiqueta = etiquetaEntity.Nome;
+                model.Etiquetas.Add(etiquetaAdminPostagens);
+            }
+
+            model.IdPostagem = editarPostagem.Id;
+            model.TituloPostagem = editarPostagem.Titulo;
+            model.DescricaoPostagem = editarPostagem.Descricao;
+            model.IdAutorPostagem = editarPostagem.Autor.Id;
+            model.IdCategoriaPostagem = editarPostagem.Categoria.Id;
+            model.DataPostagem = editarPostagem.DataExibicao;
+            
+            model.Erro = (string) TempData["erro-msg"];
+
+            return View(model);
         }
 
         [HttpPost]
@@ -93,10 +194,22 @@ namespace PWABlog.Controllers.Admin
         [HttpGet]
         public IActionResult Remover(int id)
         {
-            ViewBag.id = id;
-            ViewBag.erro = TempData["erro-msg"];
+            AdminPostagensRemoverViewModel model = new AdminPostagensRemoverViewModel();
 
-            return View();
+            var postagemRemover = _postagemOrmService.ObterPostagemPorId(id);
+
+            if (postagemRemover == null)
+            {
+                return RedirectToAction("Listar");
+            }
+
+            model.IdPostagem = postagemRemover.Id;
+            model.TituloPostagem = postagemRemover.Titulo;
+            model.TituloPagina += model.TituloPostagem;
+            
+            model.Erro = (string) TempData["erro-msg"];
+
+            return View(model);
         }
 
         [HttpPost]
